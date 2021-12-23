@@ -108,10 +108,3 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #   define DISABLE_RGB_MATRIX_SOLID_SPLASH
 #   define DISABLE_RGB_MATRIX_SOLID_MULTISPLASH
 #endif
-
-
-#define TRACKBALL_RIGHT
-// #ifdef TRACKBALL_RIGHT
-//     #define PIMORONI_TRACKBALL_INVERT_X
-//     #define PIMORONI_TRACKBALL_INVERT_Y
-// #endif

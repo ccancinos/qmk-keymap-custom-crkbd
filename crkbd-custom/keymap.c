@@ -1,10 +1,6 @@
 #include QMK_KEYBOARD_H
 #include "keymap_us_international.h"
 
-// trackball 
-#include "pimoroni_trackball.h"
-#include "pointing_device.h"
-
 extern keymap_config_t keymap_config;
 
 #ifdef RGBLIGHT_ENABLE
@@ -25,11 +21,9 @@ extern uint8_t is_master;
 // entirely and just use numbers.
 enum layers {
   _QWERTY,
-  _LOWER,
-  _RAISE,
-  _ADJUST,
+  _SYMBOLS,
   _NAV,
-  _TRKBALL,
+  _ADJUST
 };
 
 // Custom keycodes for layer keys
@@ -43,103 +37,62 @@ enum custom_keycodes {
   RAISE,
   ADJUST,
   NAV,
-  TRKBALL,
   RGBRST,
-  
-  
-  KC_RACL, // right alt / colon
 
-  BALL_HUI,//cycles hue
-  BALL_WHT,//cycles white
-  BALL_DEC,//decreased color
-
-  BALL_LAY,
-  BALL_SRL, // scroll
-  BALL_NCL,//left click
-  BALL_RCL,//right click
-  BALL_MCL,//middle click
+  KC_RACL // right alt / colon
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-  [_QWERTY] = LAYOUT(
-  //,-----------------------------------------.                ,---------------------------------------------.
-    KC_LGESC,  KC_Q,  KC_W,  KC_E,  KC_R,  KC_T,                   KC_Y,  KC_U,  KC_I,  KC_O,  KC_P,  KC_BSPC,
-  //|------+------+------+------+------+------|                |------+------+-------+------+-------+--------|
-CTL_T(KC_TAB),  KC_A,  KC_S,  KC_D,  KC_F,  KC_G,                   KC_H,  KC_J,  KC_K,  KC_L, KC_SCLN,KC_QUOT,
-  //|------+------+------+------+------+------|                |------+------+-------+------+-------+--------|
-  TRKBALL, KC_Z,  KC_X,  KC_C,  KC_V,  KC_B,                   KC_N,  KC_M,KC_COMM,KC_DOT,KC_SLSH,   NAV,
-  //|------+------+------+------+------+------+------|  |------+------+------+-------+------+-------+--------|
-                KC_LGUI, LOWER, MT(MOD_LSFT, KC_SPC),   MT(MOD_LALT, KC_ENT), RAISE, KC_BTN1
-                              //`--------------------'  `--------------------'
+  [_QWERTY] = LAYOUT_split_3x6_3(
+  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+       KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,  KC_BSPC,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+  MT(MOD_LSFT,
+  OSM(MOD_LSFT)), KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+  MT(MOD_LCTL,
+     KC_CAPS),    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_ESC,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                          KC_LGUI,MO(_SYMBOLS),KC_ENT,   KC_SPC,MO(_NAV), KC_RALT
+                                      //`--------------------------'  `--------------------------'
+
   ),
 
-/*
- * Lower Layer: Numpad, Media
- * 
- * .-------------------------------------------.                  .-------------------------------------------.
- * |        |  F7  | F8   | F9   | F10  |      |                  | / ?  | 7 &  | 8 *  | 9 (  | - _  |        |
- * |--------+------+------+------+------+------|                  |------+------+------+------+------+--------|
- * |        |  F4  | F5   | F6   | F11  |      |                  | *    | 4 $  | 5 %  | 6 ^  | , <  | +      |
- * |--------+------+------+------+------+------+                  |------+------+------+------+------+--------|
- * |        |  F1  | F2   | F3   | F12  |      |                  | 0 )  | 1 !  | 2 @  | 3 #  | = +  |        |
- * '----------------------+------+------+------+                  |------+------+------+----------------------'
- *                        |      |      |      |                  |      |      |      |
- *                        |      |      |      |                  |      |      |      |
- *                        '--------------------'                  '--------------------'
- */
-    [_LOWER] = LAYOUT(
-      _______, KC_F7,   KC_F8,   KC_F9,   KC_F10, _______,     KC_SLSH, KC_7,    KC_8,    KC_9, KC_MINS, _______,
-      _______, KC_F4,   KC_F5,   KC_F6,   KC_F11, _______,     KC_ASTR, KC_4,    KC_5,    KC_6, KC_COMM, KC_PLUS,
-      _______, KC_F1,   KC_F2,   KC_F3,   KC_F12, _______,     KC_0,    KC_1,    KC_2,    KC_3, KC_EQL,  _______,
-                               _______, _______, _______,     _______, _______, _______
-    ),
-/*
- * Raise Layer: Symbols
- *
- * .-------------------------------------------.                   .-------------------------------------------.
- * |        |  !   |  @   |  {   |  }   |  |   |                   |   £  |  _   |  €   |      |      |  \     |
- * |--------+------+------+------+------+------|                   |------+------+------+------+------+--------|
- * |        |  #   |  $   |  (   |  )   |  `   |                   |   +  |  -   |  /   |  *   |  %   |  ' "   |
- * |--------+------+------+------+------+------|                   |------+------+------+------+------+--------|
- * |        |  %   |  ^   |  [   |  ]   |  ~   |                   |   &  |  =   |  ,   |  .   |  / ? | - _    |
- * '----------------------+------+------+------|                   |------+------+------+----------------------'
- *                        |      |      |      |                   |      |      |      |
- *                        |      |      |      |                   |      |      |      |
- *                        '--------------------'                   '--------------------'
- */
-  [_RAISE] = LAYOUT(
-   _______, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_PIPE,        US_PND, KC_UNDS, ALGR(KC_5),_______,_______,KC_BSLS,
-   _______, KC_HASH, KC_DLR,  KC_LPRN, KC_RPRN, KC_GRV,         KC_PLUS, KC_MINS, KC_SLSH, KC_ASTR, KC_PERC, KC_QUOT,
-   _______, KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, KC_TILD,        KC_AMPR, KC_EQL,  KC_COMM, KC_DOT,  KC_SLSH, KC_MINS,
-                          _______, _______, _______,        _______, _______, _______
+  [_SYMBOLS] = LAYOUT_split_3x6_3(
+  //,-----------------------------------------------------.                    ,-------------------------------------------------------.
+       KC_TAB,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,   KC_BSPC,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+----------+--------+--------+--------|
+      KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, KC_LEFT, KC_DOWN,   KC_UP,  KC_RIGHT, XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+----------+--------+--------+--------|
+      KC_LCTL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, KC_HOME, KC_PGDOWN, KC_PGUP,  KC_END, XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+----------+--------+--------+--------|
+                                          KC_LGUI, _______,  KC_ENT,     KC_SPC,   MO(_ADJUST), KC_RALT
+                                      //`--------------------------'  `--------------------------'
   ),
 
-  [_ADJUST] = LAYOUT(
-  //,-----------------------------------------.                ,-----------------------------------------.
-      RESET,RGBRST, KC_NO, KC_NO, KC_NO, KC_NO,                  KC_NO,KC__MUTE, KC_NO, KC_NO, KC_NO, KC_NO,
-  //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-    RGB_TOG,RGB_HUI,RGB_SAI,RGB_VAI,RGB_SPI,KC_NO,               KC_PAUSE,KC__VOLUP, KC_NO, KC_NO, KC_NO, KC_NO,
-  //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-    RGB_MOD,RGB_HUD,RGB_SAD,RGB_VAD,RGB_SPD,KC_NO,               KC_SCROLLLOCK,KC__VOLDOWN, KC_NO, KC_NO, KC_NO, RGB_RMOD,
-  //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
-                                KC_LGUI, LOWER,KC_SPC,   KC_ENT, RAISE,KC_RALT
-                              //`--------------------'  `--------------------'
+  [_NAV] = LAYOUT_split_3x6_3(
+  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+       KC_TAB, KC_EXLM,   KC_AT, KC_HASH,  KC_DLR, KC_PERC,                      KC_CIRC, KC_AMPR, KC_LPRN, KC_RPRN, KC_ASTR, KC_BSPC,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_MINS,  KC_EQL, KC_LBRC, KC_RBRC, KC_BSLS,  KC_GRV,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      KC_LCTL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_PIPE, KC_TILD,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                          KC_LGUI,   MO(_ADJUST),  KC_ENT,     KC_SPC, _______, KC_RALT
+                                      //`--------------------------'  `--------------------------'
   ),
 
-  [_NAV] = LAYOUT(
-      _______, _______, _______, _______, _______, _______,                      KC_WH_D, KC_HOME, KC_UP,   KC_END,  _______, KC_SLCK,
-CTL_T(KC_TAB), _______, _______, _______, _______, _______,                      KC_WH_U, KC_LEFT, KC_DOWN, KC_RGHT, _______, KC_CAPS,
-      _______, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______, _______,
-                                          _______, _______, _______,    _______, _______, _______
-  ),
-
-  [_TRKBALL] = LAYOUT(
-      _______, _______, _______, _______, _______, _______,                       _______, _______, _______, _______,  _______, _______,
-      _______, _______, BALL_SRL, _______, _______, _______,                       _______, _______, _______, _______, _______, _______,
-      _______, _______, _______, _______, _______, _______,                       _______, _______, _______, _______, _______, _______,
-                                         _______, _______, BALL_NCL,    BALL_RCL, _______, _______
+  [_ADJUST] = LAYOUT_split_3x6_3(
+  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+        RESET, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                          KC_LGUI, _______,  KC_SPC,     KC_ENT, _______, KC_RALT
+                                      //`--------------------------'  `--------------------------'
   )
-
 };
 
 int RGB_current_mode;
@@ -326,21 +279,19 @@ void render_layer_state(void) {
         0x20, 0xbd, 0xbe, 0xbf, 0x20,
         0x20, 0xdd, 0xde, 0xdf, 0x20, 0};
 
-    static const char PROGMEM nav_layer[] = {
-        0x20, 0x9d, 0x9e, 0x9f, 0x20,
-        0x20, 0xba, 0xbb, 0xbc, 0x20,
-        0x20, 0xdd, 0xde, 0xdf, 0x20, 0};
+//    static const char PROGMEM nav_layer[] = {
+//        0x20, 0x9d, 0x9e, 0x9f, 0x20,
+//        0x20, 0xba, 0xbb, 0xbc, 0x20,
+//        0x20, 0xdd, 0xde, 0xdf, 0x20, 0};
 
     if(layer_state_is(_ADJUST)) {
         oled_write_P(adjust_layer, false);
-    } else if(layer_state_is(_LOWER)) {
+    } else if(layer_state_is(_SYMBOLS)) {
         oled_write_P(lower_layer, false);
-    } else if(layer_state_is(_RAISE)) {
-        oled_write_P(raise_layer, false);
     } else if(layer_state_is(_NAV)) {
-        oled_write_P(nav_layer, false);
-    } else if(layer_state_is(_TRKBALL)) {
-        oled_write_P(nav_layer, false);
+        oled_write_P(raise_layer, false);
+//    } else if(layer_state_is(_NAV)) {
+//        oled_write_P(nav_layer, false);
     }else {
       oled_write_P(default_layer, false);
     }
@@ -422,20 +373,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case LOWER:
       if (record->event.pressed) {
-        layer_on(_LOWER);
-        update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
+        layer_on(_SYMBOLS);
+        update_tri_layer_RGB(_SYMBOLS, _NAV, _ADJUST);
       } else {
-        layer_off(_LOWER);
-        update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
+        layer_off(_SYMBOLS);
+        update_tri_layer_RGB(_SYMBOLS, _NAV, _ADJUST);
       }
       return false;
     case RAISE:
       if (record->event.pressed) {
-        layer_on(_RAISE);
-        update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
+        layer_on(_NAV);
+        update_tri_layer_RGB(_SYMBOLS, _NAV, _ADJUST);
       } else {
-        layer_off(_RAISE);
-        update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
+        layer_off(_NAV);
+        update_tri_layer_RGB(_SYMBOLS, _NAV, _ADJUST);
       }
       return false;
     case ADJUST:
@@ -448,34 +399,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case NAV:
       if (record->event.pressed) {
         layer_on(_NAV);
-        trackball_set_scrolling(true);
       } else {
         layer_off(_NAV);
-        trackball_set_scrolling(false);
-      }
-      return false;
-    
-    case BALL_SRL:
-      if(record->event.pressed){
-        trackball_set_scrolling(true);
-      } else{
-        trackball_set_scrolling(false);
-      }
-      return false;
-    case BALL_NCL:
-      record->event.pressed?register_code(KC_BTN1):unregister_code(KC_BTN1);
-      return false;
-    case BALL_RCL:
-      record->event.pressed?register_code(KC_BTN2):unregister_code(KC_BTN2);
-      return false;
-    case BALL_MCL:
-      record->event.pressed?register_code(KC_BTN3):unregister_code(KC_BTN3);
-      return false;
-    case TRKBALL:
-      if (record->event.pressed) {
-        layer_on(_TRKBALL);
-      } else {
-        layer_off(_TRKBALL);
       }
       return false;
     case KC_RACL:
