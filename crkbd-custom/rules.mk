@@ -7,4 +7,6 @@ LEADER_ENABLE      = yes
 UNICODE_ENABLE     = yes
 CONSOLE_ENABLE     = no
 EXTRAFLAGS += -flto
-
+WPM_ENABLE         = yes
+WPM_ALLOW_COUNT_REGRESSOIN = yes
+EXTRAKEY_ENABLE = yes

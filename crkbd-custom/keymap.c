@@ -31,6 +31,20 @@ enum layers {
 #define KC_LGESC LGUI_T(KC_ESC)
 // #define _______ KC_NO
 
+#define KC_STCAP MT(MOD_LSFT, KC_CAPS)
+
+// Add screenshot buttons using macros? https://www.ias.edu/itg/content/keyboard-shortcuts-capture-screen-shot-mac-os-x
+// Screenshot screen on file
+#define SS_SFIL SCMD(KC_3)
+// Screenshot screen on clipboard
+#define SS_SCLI C(SCMD(KC_3))
+// Screenshot portion on file
+#define SS_PFIL SCMD(KC_4)
+// Screenshot portion on clipboard
+#define SS_PCLI C(SCMD(KC_4))
+// Lock Screen CTRL+CMD+Q
+#define LCK_SCR C(LCMD(KC_Q))
+
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
   LOWER,
@@ -47,78 +61,58 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
        KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,  KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-  MT(MOD_LSFT,
-  OSM(MOD_LSFT)), KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,
+     KC_STCAP,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-  MT(MOD_LCTL,
-     KC_CAPS),    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_ESC,
+      KC_LCTL,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_ESC,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI,MO(_SYMBOLS),KC_ENT,   KC_SPC,MO(_NAV), KC_RALT
+                                          KC_LGUI,MO(_SYMBOLS),KC_SPC,   KC_ENT,MO(_NAV), KC_RALT
                                       //`--------------------------'  `--------------------------'
-
   ),
 
   [_SYMBOLS] = LAYOUT_split_3x6_3(
-  //,-----------------------------------------------------.                    ,-------------------------------------------------------.
-       KC_TAB,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,   KC_BSPC,
-  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+----------+--------+--------+--------|
-      KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, KC_LEFT, KC_DOWN,   KC_UP,  KC_RIGHT, XXXXXXX,
-  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+----------+--------+--------+--------|
-      KC_LCTL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, KC_HOME, KC_PGDOWN, KC_PGUP,  KC_END, XXXXXXX,
-  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+----------+--------+--------+--------|
-                                          KC_LGUI, _______,  KC_ENT,     KC_SPC,   MO(_ADJUST), KC_RALT
+  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+       KC_TAB, KC_EXLM,   KC_AT, KC_HASH,  KC_DLR, KC_PERC,                      KC_CIRC, KC_AMPR, KC_LBRC, KC_RBRC, KC_ASTR, KC_BSPC,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      KC_DQUO,   KC_LT,   KC_GT, KC_COLN, KC_QUES, KC_QUOT,                      KC_MINS,  KC_EQL, KC_LPRN, KC_RPRN, KC_PIPE,  KC_GRV,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      KC_LCTL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_BSLS, KC_TILD,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                          KC_LGUI, _______,  KC_ENT,   KC_SPC, MO(_ADJUST), KC_RALT
                                       //`--------------------------'  `--------------------------'
   ),
 
   [_NAV] = LAYOUT_split_3x6_3(
-  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_TAB, KC_EXLM,   KC_AT, KC_HASH,  KC_DLR, KC_PERC,                      KC_CIRC, KC_AMPR, KC_LPRN, KC_RPRN, KC_ASTR, KC_BSPC,
-  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_MINS,  KC_EQL, KC_LBRC, KC_RBRC, KC_BSLS,  KC_GRV,
-  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LCTL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_PIPE, KC_TILD,
-  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI,   MO(_ADJUST),  KC_ENT,     KC_SPC, _______, KC_RALT
+  //,-----------------------------------------------------.                    ,-------------------------------------------------------.
+       KC_TAB,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,   KC_BSPC,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+----------+--------+--------+--------|
+      KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, KC_LEFT,   KC_DOWN,   KC_UP,KC_RIGHT, XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+----------+--------+--------+--------|
+      KC_LCTL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, KC_HOME, KC_PGDOWN, KC_PGUP,  KC_END, XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+----------+--------+--------+--------|
+                                         KC_LGUI,MO(_ADJUST),KC_SPC,     KC_ENT, _______, KC_RALT
                                       //`--------------------------'  `--------------------------'
   ),
 
   [_ADJUST] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-        RESET, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        RESET, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, KC_BRMD, KC_BRMU, SS_SCLI, SS_SFIL,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, KC_VOLD, KC_VOLU, KC_MUTE, SS_PCLI,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      LCK_SCR, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, KC_MRWD, KC_MFFD, KC_MPLY, SS_PFIL,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           KC_LGUI, _______,  KC_SPC,     KC_ENT, _______, KC_RALT
                                       //`--------------------------'  `--------------------------'
   )
 };
 
-int RGB_current_mode;
-
-
-// Setting ADJUST layer RGB back to default
-void update_tri_layer_RGB(uint8_t layer1, uint8_t layer2, uint8_t layer3) {
-  if (IS_LAYER_ON(layer1) && IS_LAYER_ON(layer2)) {
-    layer_on(layer3);
-  } else {
-    layer_off(layer3);
-  }
-}
-
-void matrix_init_user(void) {
-    #ifdef RGBLIGHT_ENABLE
-      RGB_current_mode = rgblight_config.mode;
-    #endif
-}
-
+//,------------------------------------------------------------------------------------
+//, OLED CONFIGURATION
+//,------------------------------------------------------------------------------------
 #ifdef OLED_DRIVER_ENABLE
 oled_rotation_t oled_init_user(oled_rotation_t rotation) { return OLED_ROTATION_270; }
 
-void render_space(void) {
-    oled_write_P(PSTR("     "), false);
-}
+void render_space(void) { oled_write_P(PSTR("     "), false); }
 
 void render_mod_status_gui_alt(uint8_t modifiers) {
     static const char PROGMEM gui_off_1[] = {0x85, 0x86, 0};
@@ -223,7 +217,7 @@ void render_mod_status_ctrl_shift(uint8_t modifiers) {
         oled_write_P(off_off_1, false);
     }
 
-    if(modifiers & MOD_MASK_SHIFT) {
+    if((modifiers & MOD_MASK_SHIFT) || (host_keyboard_led_state().caps_lock)) {
         oled_write_P(shift_on_1, false);
     } else {
         oled_write_P(shift_off_1, false);
@@ -245,7 +239,7 @@ void render_mod_status_ctrl_shift(uint8_t modifiers) {
         oled_write_P(off_off_2, false);
     }
 
-    if(modifiers & MOD_MASK_SHIFT) {
+    if((modifiers & MOD_MASK_SHIFT) || (host_keyboard_led_state().caps_lock)) {
         oled_write_P(shift_on_2, false);
     } else {
         oled_write_P(shift_off_2, false);
@@ -261,7 +255,7 @@ void render_logo(void) {
     oled_write_P(PSTR("corne"), false);
 }
 
-void render_layer_state(void) {
+void render_layer_state_logo(void) {
     static const char PROGMEM default_layer[] = {
         0x20, 0x94, 0x95, 0x96, 0x20,
         0x20, 0xb4, 0xb5, 0xb6, 0x20,
@@ -297,24 +291,92 @@ void render_layer_state(void) {
     }
 }
 
-void render_status_main(void) {
-    render_logo();
-    render_space();
-    render_layer_state();
-    render_space();
+void render_os_modifiers(void) {
     render_mod_status_gui_alt(get_mods()|get_oneshot_mods());
     render_mod_status_ctrl_shift(get_mods()|get_oneshot_mods());
+}
+
+void render_os_modifiers_name(void) {
+    uint8_t modifiers = get_mods()|get_oneshot_mods();
+
+    if(modifiers & MOD_MASK_CTRL) {
+        oled_write_P(PSTR(" CTRL"), false);
+    } else if(modifiers & MOD_MASK_ALT) {
+        oled_write_P(PSTR(" ALT"), false);
+    } else if(modifiers & MOD_MASK_SHIFT) {
+        oled_write_P(PSTR("SHIFT"), false);
+    } else if(modifiers & MOD_MASK_GUI) {
+        oled_write_P(PSTR(" CMD"), false);
+    } else if (host_keyboard_led_state().caps_lock)
+        oled_write_P(PSTR(" CAPS"), false);
+    else {
+        oled_write_P(PSTR("     "), false);
+    }
+}
+
+void render_layer_names(void) {
+    oled_write_P(PSTR(" NAV "), layer_state_is(_NAV) && !layer_state_is(_ADJUST));
+    oled_write_P(PSTR("QWERT"), layer_state_is(_QWERTY));
+    oled_write_P(PSTR(" SYM "), layer_state_is(_SYMBOLS) && !layer_state_is(_ADJUST));
+    oled_write_P(PSTR(" ADJ "), layer_state_is(_ADJUST));
+}
+
+void render_wpm(void) {
+    char wpm_str[4];
+    uint8_t current_wpm = get_current_wpm();
+
+    oled_write("WPM:\n", false);
+    wpm_str[3] = '\0';
+    wpm_str[2] = '0' + current_wpm % 10;
+    wpm_str[1] = '0' + ( current_wpm /= 10) % 10;
+    wpm_str[0] = '0' + current_wpm / 10;
+    oled_write(wpm_str, false);
+}
+
+//void render_status_main(void) {
+//    render_logo();
+//    render_space();
+//    render_layer_state_logo();
+//    render_space();
+//    render_os_modifiers();
+//}
+
+void render_status_main(void) {
+    render_logo();
+    render_space(); render_space(); render_space(); render_space(); render_space(); render_space();
+    render_os_modifiers();
+    render_space();
+    render_os_modifiers_name();
 }
 
 void render_status_secondary(void) {
-    render_logo();
+    render_layer_state_logo();
     render_space();
-    render_layer_state();
-    render_space();
-    render_mod_status_gui_alt(get_mods()|get_oneshot_mods());
-    render_mod_status_ctrl_shift(get_mods()|get_oneshot_mods());
+    render_layer_names();
+    render_space(); render_space(); render_space(); render_space(); render_space(); render_space();
+    render_wpm();
 }
 
+void oled_task_user(void) {
+    if (timer_elapsed32(oled_timer) > 30000) {
+        oled_off();
+        return;
+    }
+#ifndef SPLIT_KEYBOARD
+    else { oled_on(); }
+#endif
+
+    if (is_master) {
+        render_status_main();  // Renders the current keyboard state (layer, lock, caps, scroll, etc)
+    } else {
+        render_status_secondary();
+    }
+}
+#endif
+
+//,------------------------------------------------------------------------------------
+//, LEADER KEYS CONFIGURATION
+//,------------------------------------------------------------------------------------
 LEADER_EXTERNS();
 
 void matrix_scan_user(void) {
@@ -344,23 +406,27 @@ void matrix_scan_user(void) {
   }
 }
 
-void oled_task_user(void) {
-    if (timer_elapsed32(oled_timer) > 30000) {
-        oled_off();
-        return;
-    }
-#ifndef SPLIT_KEYBOARD
-    else { oled_on(); }
-#endif
+//,------------------------------------------------------------------------------------
+//, RGB CONFIGURATION
+//,------------------------------------------------------------------------------------
 
-    if (is_master) {
-        render_status_main();  // Renders the current keyboard state (layer, lock, caps, scroll, etc)
-    } else {
-        render_status_secondary();
-    }
+int RGB_current_mode;
+
+// Setting ADJUST layer RGB back to default
+void update_tri_layer_RGB(uint8_t layer1, uint8_t layer2, uint8_t layer3) {
+  if (IS_LAYER_ON(layer1) && IS_LAYER_ON(layer2)) {
+    layer_on(layer3);
+  } else {
+    layer_off(layer3);
+  }
 }
 
-#endif
+void matrix_init_user(void) {
+    #ifdef RGBLIGHT_ENABLE
+      RGB_current_mode = rgblight_config.mode;
+    #endif
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
 #ifdef OLED_DRIVER_ENABLE
