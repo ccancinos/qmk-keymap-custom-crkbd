@@ -1,0 +1,21 @@
+# http://www.keyboard-layout-editor.com/#/
+
+[{x:3,a:7},"",{x:7},"Bright Down"],
+[{y:-0.9,x:2},""],
+[{y:-1,x:4},"",{x:5},"",{x:1},"Bright Up"],
+[{y:-0.9,x:5},"",{x:3},""],
+[{y:-0.9,a:4},"Reset",{a:7},"",{x:11},"ScrSht Screen Clip","ScrSht Screen File"],
+[{y:-0.3,x:3},"",{x:7},"Vol Down"],
+[{y:-0.9,x:2},"",{x:1},"",{x:5},"",{x:1},"Vol Up"],
+[{y:-0.9,x:5},"",{x:3},""],
+[{y:-0.9},"","",{x:11},"Mute","ScrSht Part Clip"],
+[{y:-0.3,x:3},"",{x:7},"Prev Track"],
+[{y:-0.9,x:2},"",{x:1},"",{x:5},"",{x:1},"Next Track"],
+[{y:-0.9,x:5},"",{x:3},""],
+[{y:-0.9,a:4},"Lock Screen",{a:7},"",{x:11},"Play/ Pause","ScrSht Part File"],
+[{y:-0.2,x:3.5},"Cmd",{x:6},"Alt"],
+[{r:15,rx:4.5,ry:4.1,y:-1},"___"],
+[{r:30,rx:5.4,ry:4.3,y:-1.5,x:0.1,h:1.5},"Space"],
+[{r:-30,rx:9.6,y:-1.5,x:-1.1,h:1.5},"Enter"],
+[{r:-15,rx:10.5,ry:4.1,y:-1,x:-1},"___"]
+
